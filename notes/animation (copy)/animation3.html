@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html>
+
+
+<head>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script>
+		
+		function reduce_size(a)
+		{
+			var b = a.children[0].children;
+
+			var back_img = b[0].children[0];
+			var front_img = b[1].children[0];
+			if(front_img.className.localeCompare('reduce_size')==0)
+			{
+				front_img.className='image';
+			}
+			else
+			{
+				front_img.className='reduce_size';
+			}
+			back_img.className = 'hidden';//kam kharab krda sala
+		
+		}
+
+		function animate_yourcards()
+		{
+			var a1 = '.deck *:nth-child(';
+			var a2 = ')';
+			var b1 = '#your_cards *:nth-child(';
+			var b2 = ')';
+			animate(b1,b2,1,5);
+		}
+
+		var next_animation = 'extra_cards';
+
+		function animate(a,b,index,count)
+		{
+			// if(count == 0)
+			// 	return;
+			var tag1 = $(".deck *:nth-child("+deck_card_count+")");
+			deck_card_count--;
+
+			//alert(a+index+b);
+			var tag2 = $(a+index+b);
+
+				var pos = tag2.position();
+				// var x = b.top - screen.height + (screen.height*(40))/100;
+				// var y = b.left - screen.width + (screen.width*(40))/100;
+				var x = pos.top - (window.innerHeight*.4);//if we use screen.width or height then add +55 to top  because browser(mozilla,chrome takes more space) top bar take 55 px or use fullscreen mode
+				var y = pos.left - (window.innerWidth*.4);
+			
+				tag1.animate(
+				{
+					top: x,
+					left: y
+				},function()
+				{
+					// alert(count);
+					tag2.css("opacity","1");
+					tag1.hide();
+					if(count == 1)
+					{
+						return;
+						if(next_animation.localeCompare('extra_cards') == 0)
+						{
+							next_animation = 'opponents_cards';
+							animate_extra_cards();
+						}
+						else if(next_animation.localeCompare('opponents_cards') == 0)
+						{
+							next_animation = 'none';
+							animate_opponents_cards();
+						}
+						else
+							return;
+					}
+					else
+					{
+						animate(a,b,index+1,count-1);
+					}	
+				})
+			
+		}
+
+		
+		var deck_card_count = 10;
+		$(document).ready(function(){
+			$('.deck').fadeIn(2000,function()
+			{
+				animate_yourcards();
+			})
+
+
+			var card_count = 0;
+			$('#show').click(function(){
+				if(card_count>=5)
+				{
+					alert('no more cards');	
+				}
+				else
+				{	
+					var pos = document.getElementsByClassName('position');
+					pos[card_count].classList.toggle('show');
+					card_count = card_count + 1;
+				}
+			})
+	
+		})
+	</script>
+	<style>
+
+		.card
+		{
+			height:	150px;;
+			width: 103px;
+			perspective: 1000px;
+			opacity: 0;
+		}
+		.position
+		{
+			position: absolute;
+			height: 150px;;
+			width: 103px;
+			transform-style: preserve-3d;
+			transition: transform 1s;
+		}
+		.front
+		{
+			position: absolute;
+			height: 100%;
+			width: 100%;
+			backface-visibility: hidden;/* only one face*/
+		}
+		.back
+		{
+			position: absolute;
+			height: 100%;
+			width: 100%;
+			backface-visibility: hidden;/* only one face*/
+			transform: rotateY(180deg);/* back side which is invisible*/
+		}
+		.show
+		{
+			transform: rotateY(180deg);
+		}
+		.reduce_size/*for img tag only*/
+		{
+			position: absolute;
+			margin: auto;
+			height: 130px;
+			width: 89px;
+		}
+		.hidden
+		{
+			display: none;
+		}
+		.image
+		{
+			height: 150px;
+			width: 103px;
+			margin: auto;
+		}
+		/*.card:hover .position
+		{
+			transform: rotateY(180deg);
+		}*/
+
+		.deck_cards{
+			height: 150px;
+			width: 103px;
+			position: absolute;
+			/*to over lap the cards of deck */
+		}
+		.deck
+		{
+			position: fixed;
+			left: 40%;
+			top: 40%;
+			display: none;
+		}
+	</style>
+</head>
+
+
+
+<body>
+	<div id='your_cards'>
+	<div style="display: inline-block;" onclick="reduce_size(this)" class='card'>
+		<div class="position">
+			<div class="front">
+				<img class='image' src="cover.png">
+			</div>
+
+			<div class="back">
+				<img class='image' src="sample_card.png">
+			</div>
+
+		</div>
+	</div>
+	
+	
+	<div style="display: inline-block;" onclick="reduce_size(this)" class='card'>
+		<div class="position">
+			<div class="front">
+				<img class='image' src="cover.png">
+			</div>
+
+			<div class="back">
+				<img class='image' src="sample_card.png">
+			</div>
+
+		</div>
+	</div>
+	
+	<div style="display: inline-block;" onclick="reduce_size(this)" class='card'>
+		<div class="position">
+			<div class="front">
+				<img class='image' src="cover.png">
+			</div>
+
+			<div class="back">
+				<img class='image' src="sample_card.png">
+			</div>
+
+		</div>
+	</div>
+	
+	<div style="display: inline-block;" onclick="reduce_size(this)" class='card'>
+		<div class="position">
+			<div class="front">
+				<img class='image' src="cover.png">
+			</div>
+
+			<div class="back">
+				<img class='image' src="sample_card.png">
+			</div>
+
+		</div>
+	</div>
+	
+	<div style="display: inline-block;" onclick="reduce_size(this)" class='card'>
+		<div class="position">
+			<div class="front">
+				<img class='image' src="cover.png">
+			</div>
+
+			<div class="back">
+				<img class='image' src="sample_card.png">
+			</div>
+
+		</div>
+	</div>
+</div>
+	<br>
+	<button id='show'>click</button>
+
+
+
+	<div class='deck'>
+		<img class='deck_cards' src="cover.png">
+		<img class='deck_cards' src="cover.png">
+		<img class='deck_cards' src="cover.png">
+		<img class='deck_cards' src="cover.png">
+		<img class='deck_cards' src="cover.png">
+		<img class='deck_cards' src="cover.png">
+		<img class='deck_cards' src="cover.png">
+		<img class='deck_cards' src="cover.png">
+		<img class='deck_cards' src="cover.png">
+		<img class='deck_cards' src="cover.png">
+	</div>
+
+
+
+
+</body>
+
+
+
+</html>

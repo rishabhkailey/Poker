@@ -1,0 +1,14 @@
+in html use
+
+<form action='/next'> it will take u to the currentaddress/next(not /next html file) so we need to define @app.route('/next') in py
+ 
+<button action='/next'> next </button>  --> submit button
+	or
+<input type = 'submit' value = 'next'> 
+
+</form>
+
+
+and in py(flask)
+
+app.route('/next') 	

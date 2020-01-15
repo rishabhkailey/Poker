@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script>
+
+		function reduce_size(a)
+		{
+			//alert(parseInt($('#is_selection_allowed').val()));
+			if(parseInt($('#is_selection_allowed').val()) == 0)
+			{	
+				return;
+			}
+			var b = a.children[0].children;
+
+			var back_img = b[0].children[0];
+			var front_img = b[1].children[0];
+			
+			//alert('haha');
+
+			back_img.className = 'hidden';//kam kharab krda sala
+
+			//alert(front_img.style.height);
+
+			var height = ''+front_img.style.height;
+			if(height.localeCompare('130px')==0)
+			{
+				front_img.style.height = '150px';
+				front_img.style.width = '103px';
+			}
+			else
+			{
+				front_img.style.height = '130px';
+				front_img.style.width = '89px';		
+			}
+		}
+		
+
+		function check_card_number(form)
+		{
+			if(parseInt(form.card_number.value) > 5)
+			{
+				alert('no more cards on table');
+				$('#is_selection_allowed').val(1);
+				alert('now select cards ');
+				return false;
+			}
+			else if(parseInt(form.card_number.value) == 5)
+			{
+				$('#is_selection_allowed').val(1);
+			}
+			return true;
+		}
+		function selected_cards()
+		{
+			var a=document.getElementsByClassName('real_cards');//chalu kyuki non selected cards have classname = real_cards and selected cards has classname = real_cards + selected_cards
+
+			var selected_cards = '';
+			for(var i =0;i<a.length;i++)
+				{
+					//alert(a[i].className);
+					if((a[i].className).localeCompare('real_cards') != 0)// if classname == realcards + selected_cards then it is selected and if == real_cards then non selected cards
+					{
+						selected_cards = selected_cards+a[i].name;					
+					}
+					
+				}			
+				$('#selected').val(selected_cards);
+				//alert($('#selected').val())
+				return true;
+		}
+
+	$(document).ready(function()
+	{
+
+			var card_count = 0;
+			$('#show').click(function(){
+				
+					var pos = document.getElementsByClassName('position');
+					pos[card_count].classList.toggle('show');
+					card_count = card_count + 1;
+					if(card_count == 5)
+					{
+						$('#is_selection_allowed').val(1);
+						alert('now select cards ');
+						$(this).hide(); 
+					}
+			})
+
+		//alert("hello")
+		$("#bet_display").text($("#bet").val())
+		$("#raise_button").click(function(){
+			var raise = parseInt($("#raise").val());
+			var current = parseInt($("#bet_display").text());
+			var total_bet = raise+current;
+			$("#bet_display").text(function(i,orignal){
+				return ''+total_bet;
+			})
+			$('#bet').val(''+total_bet);
+		})
+
+		var count = 1,flag=0;
+		$('.real_cards').click(function(){
+			if(parseInt($('#is_selection_allowed').val())==1)
+			{
+				//alert(count);
+				
+				if(count > 4)
+				{
+					alert('you can select max 3 cards')
+				}
+				else
+				{
+
+					if((this.className).localeCompare('real_cards') == 0)
+					{	
+						$(this).toggleClass('selected_cards')// prev class = extra_cards after toggle class = extra_cards selected cards and again after toggle it becomes again extra_cards
+						count = count+1
+ 					}
+ 					else
+ 					{
+ 						$(this).toggleClass('selected_cards')
+ 						count = count-1
+ 					}
+				}
+				if(count == 4)
+				{
+					$('#deal').css('display','inline-block');
+				}
+				else if(count<4)
+				{
+					$('#deal').css('display','none');
+				}
+
+			}
+		})
+	})
+
+</script>
+	<title>start</title>
+</head>
+
+
+<style>
+		.real_cards
+		{
+			height: 150px; 
+			width: 103px;
+		}
+		.extra_cards
+		{
+			height: 150px;
+			width: 103px;
+		}
+		.selected_cards
+		{
+			/*height: 130px;
+			*/
+			border-radius: 5px;
+			border-color: black;
+			border-width: 1px;
+
+		}
+		.card
+		{
+			height:	150px;;
+			width: 103px;
+			perspective: 1000px;
+		}
+		.position
+		{
+			position: absolute;
+			height: 150px;;
+			width: 103px;
+			transform-style: preserve-3d;
+			transition: transform .6s;
+		}
+		.front
+		{
+			position: absolute;
+			height: 100%;
+			width: 100%;
+			backface-visibility: hidden;/* only one face*/
+		}
+		.back
+		{
+			position: absolute;
+			height: 100%;
+			width: 100%;
+			backface-visibility: hidden;/* only one face*/
+			transform: rotateY(180deg);/* back side which is invisible*/
+		}
+		.show
+		{
+			transform: rotateY(180deg);
+		}
+		.hidden
+		{
+			display: none;
+		}
+		.image/*for cover as we cannot assign the same class as real_extra because we want real cards not cover on $('.real_extra').click()*/
+		{
+			height: 150px;
+			width: 103px;
+		}
+		
+</style>
+
+
+<body>
+
+	Your cards<br>
+	{%for i in hand1%}
+		<img height='150px' src="static/images/{{i}}.png">
+	{%endfor%}<br>
+
+	Total Bet = $<span  id='bet_display'>0</span><br>
+
+	<input type="text" name="raise" id='raise' value='100'>
+	<button id="raise_button">raise</button>
+	<br><br>
+
+
+<input type="hidden" name="is_selection_allowed" id='is_selection_allowed' value='0'>
+<button id='show'>check</button>
+
+	<form action="/start" style="display: inline-block;">
+		<input type="submit" name="rc" value='reset cards'>
+	</form>
+
+	<form action='/deal' style="display: inline-block;" onsubmit="selected_cards()" method='POST'>
+		<input type="hidden" name="selected" id='selected' value=''>
+		<input type="hidden" name="your" value="{{hand1}}">
+		<input type="hidden" name="opponent" value="{{hand2}}">
+		<input type='submit'  style="display: none;" id='deal' name='done_deal' value='deal'>
+	</form>
+
+<div>
+	Extra cards<br>
+	<div id='cover'>
+		{%for i in range(5)%}
+			<div style="display: inline-block;"  onclick="reduce_size(this)" class='card'>
+				<div class="position">
+					<div class="front">
+						<img class='image' src="static/images/cover.png">
+					</div>
+
+					<div class="back">
+						<img class='real_cards' name="{{real_extra[i]}}" src="static/images/{{real_extra[i]}}.png">
+					</div>
+
+				</div>
+			</div>
+		{%endfor%}
+	</div>
+</div>
+
+	<br>
+
+	Your opponent<br>
+	{%for i in range(2)%}
+		<img height='150px' src="static/images/cover.png">
+	{%endfor%}
+
+	<br><br>
+</body>
+
+</html>

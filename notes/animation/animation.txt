@@ -1,0 +1,104 @@
+css class
+
+to rotate 2d (no fliping)
+
+.class
+{
+	transform: rotateZ(-20deg);
+}
+
+rotate 3d
+.class
+{
+	transform: rotateX(90deg);//or rotateY()
+
+}
+
+
+rotrate on event
+
+.class: hover
+{
+	transform: rotateX(30deg);
+  	transition: transform 0.6s;//time of animation it (it will not work without event)
+}
+
+if want to change class1 if hover on class2 then
+
+.class2:hover .class1
+{
+	transform: rotateX(30deg);
+  	transition: transform 0.6s;
+}
+
+
+
+#when we rotate(3d ala) 90deg x then it show inverted image and if we want its back to be hidden use
+
+backface-visibility: hidden;
+
+
+
+#to make a flip card
+
+<div class='flip_card'> // main 
+	<div class='postion'>//for positioning the front and back side of card
+		<div class='front'>//front side
+			<img>
+		<div>
+
+		<div class='back'>
+			<img>
+		</div>
+	<div>
+</div>
+
+
+css
+.flip_class
+{
+	height: 50px;/* imp else one card(div tag) will have width: 100%*/ 
+	width: 100px;/* height and width of the cards*/
+	perspective: 100px; /* it gives 3d effect without this if we do rotateY(30) it will just reduce its width but no 3d effect to get 3d effect use*/ 
+}
+.position
+{
+	position: relative;
+	height: 50px;
+	width: 100px;
+	transform-style: preserve-3d;
+	transition: transform 1s;
+}
+.front
+{
+	position: absolute;/* not realative else it front and back will not be at same place*/
+	height: 100%;/* 100% of the parent */
+	width: 100%;/* required in case if front or back is not an image it div tag's height and width so the text wills stay in that height and width(image di width te height te no effect as it is different tag and it's height and width depends on the css of img tag)(img is child of div and this is css of div)*/
+
+	backface-visibility: hidden;/* only one face*/
+}
+
+
+.back
+{
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	backface-visibility: hidden;/* only one face*/
+	transform: rotateY(180deg);/* back side which is invisible*/
+}
+
+now we have two images at same position(overlapping) one has front , and other has back side on top(not visible)
+on hover we need to rotate both y 180deg so front has its bachside on top(not visible) and back has its front side on top(visible)
+
+flip-card:hover position  /*(containing both the front and back)*/
+{
+	transform: rotateY(180deg);/* baki transform de tag upper declare krte c*/
+}
+
+
+for multiple cards to display in sinle line without <br> use span at place make first div(class = flip-card)
+
+or use <div style="display: inline-block;" class='flip-card'>
+diff in div and span is div has display: block; and span has display: inline-block;
+prefer first one second one doesnt work

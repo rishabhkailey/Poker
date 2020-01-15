@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script>
+		//$(document).ready(funtion()
+		var deck_card_count = 10;
+		var real_card_count = 1;		
+		$(document).ready(function()
+		{
+			$('.deck').fadeIn(2000,function()
+			{
+				animate_yourcards();
+			})
+		})
+		
+		function animate_yourcards()
+		{
+			var a1 = '.deck *:nth-child(';
+			var a2 = ')';
+			var b1 = '.real_cards *:nth-child(';
+			var b2 = ')';
+			animate(b1,b2,1,2);
+		}
+
+
+		function animate_extra_cards()
+		{
+			var b1 = '.extra_cards *:nth-child(';
+			var b2 = ')';
+			animate(b1,b2,1,5);
+		}
+		
+		function animate_opponents_cards()
+		{
+			var b1 = '.opponents_cards *:nth-child(';
+			var b2 = ')';
+			animate(b1,b2,1,2);
+		}
+	
+		var next_animation = 'extra_cards';
+
+		function animate(a,b,index,count)
+		{
+			// if(count == 0)
+			// 	return;
+			var tag1 = $(".deck *:nth-child("+deck_card_count+")");
+			deck_card_count--;
+
+			// alert(a+index+b);
+			var tag2 = $(a+index+b);
+
+				var pos = tag2.position();
+				// var x = b.top - screen.height + (screen.height*(40))/100;
+				// var y = b.left - screen.width + (screen.width*(40))/100;
+				var x = pos.top - (window.innerHeight*.4);//if we use screen.width or height then add +55 to top  because browser(mozilla,chrome takes more space) top bar take 55 px or use fullscreen mode
+				var y = pos.left - (window.innerWidth*.4);
+			
+				tag1.animate(
+				{
+					top: x,
+					left: y
+				},function()
+				{
+					// alert(count);
+					tag2.css("opacity","1");
+					tag1.hide();
+					if(count == 1)
+					{
+						if(next_animation.localeCompare('extra_cards') == 0)
+						{
+							next_animation = 'opponents_cards';
+							animate_extra_cards();
+						}
+						else if(next_animation.localeCompare('opponents_cards') == 0)
+						{
+							next_animation = 'none';
+							animate_opponents_cards();
+						}
+						else
+							return;
+					}
+					else
+					{
+						animate(a,b,index+1,count-1);
+					}	
+				})
+			
+		}
+
+		/*function animate_yourcards()
+		{
+			
+			animate($(".deck *:nth-child("+deck_card_count+")"),$(".real_cards *:nth-child("+1 +")"),2);
+				deck_card_count--;
+			
+
+		}
+
+	
+
+
+		function animate(a,c,count)
+		{
+			if(count == 0)
+				return;
+				var b= c.position();
+				// var x = b.top - screen.height + (screen.height*(40))/100;
+				// var y = b.left - screen.width + (screen.width*(40))/100;
+				var x = b.top - (window.innerHeight*.4);//if we use screen.width or height then add +55 to top  because browser(mozilla,chrome takes more space) top bar take 55 px or use fullscreen mode
+				var y = b.left - (window.innerWidth*.4);
+			
+				a.animate(
+				{
+					top: x,
+					left: y
+				},function()
+				{
+					animate($(".deck *:nth-child("+deck_card_count+")"),$(".real_cards *:nth-child("+2 +")"),count - 1);
+					deck_card_count--;	
+
+				})
+			
+		}*/
+	</script>
+	
+	<style>
+		.deck_cards{
+			height: 150px;
+			width: 103px;
+			position: absolute;
+			/*to over lap the cards of deck */
+		}
+		.deck
+		{
+			position: fixed;
+			left: 40%;
+			top: 40%;
+			display: none;
+		}
+		.cards
+		{
+			opacity: 0;/*display none nal oh tag hi ni detect krda*/
+			height: 150px;
+			width: 103px;
+		}
+	</style>
+
+</head>
+<body>
+
+	<div class='real_cards'>
+		<img class='cards' src="sample_card.png">
+		<img class='cards' src="sample_card.png">
+	</div>
+
+	<div class='extra_cards'>
+		<img class='cards' src="cover.png">
+		<img class='cards' src="cover.png">
+		<img class='cards' src="cover.png">
+		<img class='cards' src="cover.png">
+		<img class='cards' src="cover.png">
+	</div>
+
+	<div class='opponents_cards'>
+		<img class='cards' src="cover.png">
+		<img class='cards' src="cover.png">
+	</div>
+
+
+	<div class='deck'>
+		<img class='deck_cards' src="cover.png">
+		<img class='deck_cards' src="cover.png">
+		<img class='deck_cards' src="cover.png">
+		<img class='deck_cards' src="cover.png">
+		<img class='deck_cards' src="cover.png">
+		<img class='deck_cards' src="cover.png">
+		<img class='deck_cards' src="cover.png">
+		<img class='deck_cards' src="cover.png">
+		<img class='deck_cards' src="cover.png">
+		<img class='deck_cards' src="cover.png">
+	</div>
+
+
+
+</body>
+</html>

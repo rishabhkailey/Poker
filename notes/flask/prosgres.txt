@@ -1,0 +1,9 @@
+prosgres
+
+commands :-
+
+sudo -u progres psql
+
+\l or \list to list databases
+create database student
+\c student // to connect with student database

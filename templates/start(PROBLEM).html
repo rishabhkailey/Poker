@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>-->
+<script src="/home/rishabh/Desktop/jquery/jquery-3.4.1.min.js"></script>
+	<script>
+	$(document).ready(function()
+	{
+		//alert("raised")
+		$("#bet_display").text($("#bet").val())
+		$("#raise_button").click(function(){
+			alert("raised called");
+			var raise = parseInt($("#raise").val());
+			var current = parseInt($("#bet_display").text());
+			var total_bet = raise+current;
+			alert(total_bet);
+			$("#bet_display").text(function(i,orignal){
+				return ''+total_bet;
+			})
+		})
+	})
+		function check(form)
+		{
+			//alert(form.card_number.value)
+			if(form.card_number.value > 5)
+			{
+				alert("no more cards available" + form.card_number.value);
+				return false;
+			}
+			
+			return true;
+		}
+</script>
+	<title>start</title>
+</head>
+<body>
+
+
+	Your cards<br>
+	{%for i in hand1%}
+		<img height='150px' src="static/images/{{i}}.png"><!--address from python file not from html doc-->
+	{%endfor%}<br>
+	
+	Total Bet = $<span id='bet_display'>0</span><br>
+
+	<input type="text" name="raise" id='raise' value='100'>
+	<button id="raise_button_1">raise</button>
+
+<form  action='/check' onsubmit="return check(this)" method="POST">
+
+	<input type="hidden" name="your" value="{{hand1}}">
+	<input type="hidden" name="opponent" value="{{hand2}}">
+    <input type="hidden" name="extra" value="{{extra}}">
+	<input type="hidden" name="real_extra" value="{{real_extra}}">
+    
+    <input type="hidden" id='bet' name="bet" value = "{{bet}}">
+	
+	
+	<input type="hidden" name="card_number" id='card_number' value={{index}}>
+	<input type="submit" value="Check">
+</form>
+	<br><br>
+
+
+<div>
+	Extra cards<br>
+	<div id='cover'></div>
+		{%for i in extra%}
+			<img height='150px' src="static/images/{{i}}.png">
+		{%endfor%}
+	</div>
+</div>
+
+
+<div style="display: none;">
+	Extra cards<br>
+	<div id='card'>
+		{%for i in extra%}
+			<img id='extra_cards' style="display: none;" height='150px' src="static/images/{{i}}.png">
+		{%endfor%}
+	</div>
+</div>
+
+	<br>
+
+	Your opponent<br>
+	{%for i in range(2)%}
+		<img height='150px' src="static/images/cover.png">
+	{%endfor%}
+
+	<br><br>
+	<form action="/start">
+		<input type="submit" name="rc" value='reset cards'>
+	</form>
+
+</body>
+
+</html>

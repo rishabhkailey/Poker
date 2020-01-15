@@ -1,0 +1,28 @@
+orm object relational model
+famous orm   hibernate/jpa(used in java),sqlalchemy(in python)
+
+sql alchemy:-(we need history ,score table)
+
+from flask_sqlalchemy import SQLAlchemy
+
+
+app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db'
+db = SQLAlchemy(app)
+
+
+class User(db.Model):// user model(Table)
+    id = db.Column(db.Integer, primary_key=True)(primary_key = true(this is primary key))(attribute or columns)
+    username = db.Column(db.String(80), unique=True, nullable=False)(null value not allowed	q`)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+
+	def __repr__(self):
+        return '<User %r>' % self.username
+
+after this in terminal type python3
+>>> from yourapplication import db
+>>> db.create_all() // it will create test.db in root
+
+and then we can use this db
+
+

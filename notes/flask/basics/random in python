@@ -1,0 +1,9 @@
+import random
+
+random.random() returnd random number between 0 and 1
+
+random.randrange(start,end,step)  return a random number between start ,end formed by step
+
+random.choice([list])  return random object from list
+
+random.shuffle(li)  suffle the list

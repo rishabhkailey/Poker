@@ -1,0 +1,81 @@
+from flask import Flask,render_template,request
+
+
+HHTP methods(requests):-
+method get(by default) is used to access the data(the parameters(request parameters) are shown in the url)
+method post is used to send data to server(add)(request body, server reads request body request form,adv we are sending something to the server)
+method delete(to delete) and many more e.g patch
+
+return redirect('/')
+
+@app.route('/',methods = [POST,GET])
+def fnx():
+	if request.method == Post
+		save data in database 
+	try
+		SAVE DATA
+	return redirect('/')  as get then it will open the same page but with get request
+	except
+		return "error"
+
+	else // get method
+		return updated page
+
+
+@app.route('/')
+def fxn():
+	render_template('abc.html')		<-- in this html we have form (for go to next url (button)) but we can have a normal form also and if we want to get the values in the that form we can get those values in the url where it takes us when we submit it(action = '/xyz')<---)
+
+	we need that form to have method post
+
+@app.route('/xyz') <-- url
+
+def fxn1():
+	form = request.form// to get the whole form
+	//form is stored as dictionary so we can use the following
+	
+
+	form = request.form.get('name') <-- name of the input , in python key of the dictionary and return value at that key
+
+	for i,j in form.items():<-- dict.items() returns list (of tuples as [(key1,value1) , (key2,value2), ...])
+
+		print(str(i) = str(j))
+
+	or u can send this as an argument to render_template ans use it in html file like
+
+	{% for key, value in form.items() %}
+            <tr>
+               <th> {{ key }} </th>  // print table of the form
+               <td> {{ value }} </td>
+            </tr>
+         {% endfor %}
+
+
+it can also be used to store the variables that were send to render_template() as an argument (bec we cannot use variable declared in one fxn(or one @app.route()'s fxn)in the other fxn )  other solution is to declare those variables as global variables 
+or use the request
+
+
+@app.route('/start')
+def start():
+	return render_template('start.html',name = 'hello',hand = ['11','22','33'])
+
+and in start.html
+
+<form method='POST' action = '/deal'>
+	<input type='hidden' name="name_of_hand" value='{{hand}}'>
+	<input type='hidden' name="name" value='{{name}}'>
+	<input type="submit" value="deal">
+</form>
+
+
+and in the app.route("/deal")
+
+@app.route('/deal',methods =[POST])
+def deal():
+	import ast // to get the variable of python
+	hand = ast.literal_eval(request.form.get("name_of_hand"))
+
+	//use as u want e.g
+	return render_template("show_hand",hands = hand)
+	
+	
